@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Aguinaldo</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <div class="container mt-5">
+    <div class="card shadow p-4">
+      <h2 class="text-center mb-4">Calculadora de Aguinaldo</h2>
+
+      <form id="aguinaldoForm">
+        <div class="mb-3">
+          <label for="nombre" class="form-label">Nombre del empleado</label>
+          <input type="text" class="form-control" id="nombre" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="sueldo" class="form-label">Sueldo mensual</label>
+          <input type="number" class="form-control" id="sueldo" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="meses" class="form-label">Meses trabajados</label>
+          <input type="number" class="form-control" id="meses" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Calcular Aguinaldo</button>
+      </form>
+
+      <div id="resultado" class="mt-4 alert alert-info d-none"></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("aguinaldoForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const nombre = document.getElementById("nombre").value;
+      const sueldo = parseFloat(document.getElementById("sueldo").value);
+      const meses = parseInt(document.getElementById("meses").value);
+
+      // Calcular años completos y meses sobrantes
+      const años = Math.floor(meses / 12);
+      const mesesSobrantes = meses % 12;
+
+      // Aguinaldo por años (máx. 10,000)
+      let aguinaldoAnual = años * 2000;
+      if (aguinaldoAnual > 10000) {
+        aguinaldoAnual = 10000;
+      }
+
+      // Aguinaldo por meses sobrantes
+      const aguinaldoMensual = mesesSobrantes * 100;
+
+      // Aguinaldo total
+      const aguinaldo = aguinaldoAnual + aguinaldoMensual;
+
+      // Total a pagar = sueldo base + aguinaldo
+      const total = sueldo + aguinaldo;
+
+      // Mostrar resultado
+      const resultado = document.getElementById("resultado");
+      resultado.classList.remove("d-none");
+      resultado.innerHTML = `
+        <strong>Empleado:</strong> ${nombre} <br>
+        <strong>Aguinaldo:</strong> $${aguinaldo.toLocaleString()} <br>
+        <strong>Total a pagar:</strong> $${total.toLocaleString()}
+      `;
+    });
+  </script>
+
+</body>
+</html>
